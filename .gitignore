@@ -1,0 +1,10 @@
+# Snakemake
+.snakemake/
+
+# pipeline configuration
+config.yml
+*.tsv
+!samples.example.tsv
+
+# working directory
+work/

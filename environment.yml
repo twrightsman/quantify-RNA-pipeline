@@ -1,0 +1,9 @@
+name: quantify-RNA-pipeline
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - snakemake >=7.19  # native SLURM support
+  - pandas =2  # tabular metadata parsing
+  - bash >=4  # for associative arrays
