@@ -1,4 +1,0 @@
-paths:
-  samples: "samples.tsv"
-  genomes: "/path/to/genomes"
-  reads: "/path/to/local/reads"

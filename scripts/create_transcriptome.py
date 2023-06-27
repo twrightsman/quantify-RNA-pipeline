@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import argparse
 from collections import defaultdict
 import hashlib
 import logging
@@ -24,7 +23,7 @@ def create_unique_feature_id(feature: gffutils.Feature) -> str:
         return f"autoincrement:{feature.attributes['ID'][0]}"
 
 
-def main(reference_path: Path, annotation_path: Path, gffutils_cache_path: Optional[Path]):
+def main(reference_path: Path, annotation_path: Path, output_path: Path, gffutils_cache_path: Optional[Path]):
     reference = FastaFile(str(reference_path))
 
     if gffutils_cache_path is not None:
@@ -72,44 +71,25 @@ def main(reference_path: Path, annotation_path: Path, gffutils_cache_path: Optio
                     transcripts.append(mRNA)
 
     if transcripts:
-        Bio.SeqIO.write(transcripts, sys.stdout, 'fasta')
+        with open(output_path, 'w') as output_file:
+            Bio.SeqIO.write(transcripts, output_file, 'fasta')
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Uses a reference genome and annotation to generate a transcriptome")
-
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        help="output progress and other informative messages",
-        action="count",
-        dest="verbosity",
-        default=0,
-    )
-
-    parser.add_argument("reference_path", type=Path, metavar="path/to/reference.fa")
-    parser.add_argument("annotation_path", type=Path, metavar="path/to/annotation.gff3")
-
-    parser.add_argument(
-        "--gffutils-cache",
-        type = Path,
-        help = "where to cache gffutil databases"
-    )
-
-    args = parser.parse_args()
-
     logging.basicConfig(
         format="{asctime} [{module}:{levelname}] {message}",
         style="{",
-        level=max(logging.DEBUG, logging.WARNING - (args.verbosity * 10)),
+        level=max(logging.DEBUG, logging.WARNING - (snakemake.params.verbosity * 10)),
     )
 
-    if args.gffutils_cache is not None:
-        args.gffutils_cache.mkdir(exist_ok = True)
+    gffutils_cache = Path(snakemake.params['gffutils_cache']) if ('gffutils_cache' in snakemake.params) else None
+    if gffutils_cache is not None:
+        gffutils_cache.mkdir(exist_ok = True)
 
     main(
-        reference_path = args.reference_path,
-        annotation_path = args.annotation_path,
-        gffutils_cache_path = args.gffutils_cache
+        reference_path = Path(snakemake.input['assembly']),
+        annotation_path = Path(snakemake.input['annotation']),
+        output_path = Path(snakemake.output['transcriptome']),
+        gffutils_cache_path = gffutils_cache
     )
 
