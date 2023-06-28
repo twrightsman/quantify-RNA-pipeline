@@ -10,7 +10,7 @@ SAMPLES = pd.read_table(
   header = 0,
   index_col = 'sample_id'
 )
-QUANTS = [f"quants/{sample_id}/quant.sf" for sample_id in SAMPLES.index]
+QUANTS = [f"quants/{sample_id}/quant.gene.tsv" for sample_id in SAMPLES.index]
 
 rule all:
   input: QUANTS
@@ -207,3 +207,33 @@ rule quantify_RNA:
     stderr = "quants/{sample_id}/salmon.err"
   script:
     "scripts/quantify_RNA.sh"
+
+
+rule map_tx_to_gene:
+  input:
+    annotation = "data/genomes/{species}/{genotype}/annotation.gff.gz"
+  output:
+    tx2gene = "data/genomes/{species}/{genotype}/tx2gene.tsv"
+  priority: -5
+  script:
+    "scripts/map_tx_to_gene.py"
+
+
+def get_summarize_by_gene_input(wildcards):
+  species = SAMPLES.loc[wildcards.sample_id, 'species'].replace(' ', '_')
+  genotype = SAMPLES.loc[wildcards.sample_id, 'genotype'].replace(' ', '_')
+  return {
+    'tx2gene': f"data/genomes/{species}/{genotype}/tx2gene.tsv",
+    'quants_tx': f"quants/{wildcards.sample_id}/quant.sf"
+  }
+
+
+rule summarize_by_gene:
+  input:
+    unpack(get_summarize_by_gene_input)
+  output:
+    quants_gene = "quants/{sample_id}/quant.gene.tsv"
+  conda:
+    "envs/summarize_by_gene.yml"
+  script:
+    "scripts/summarize_by_gene.R"

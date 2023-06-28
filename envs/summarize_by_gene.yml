@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - bioconductor-tximport =1.26
+  - r-readr
+  - r-jsonlite
