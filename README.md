@@ -12,6 +12,10 @@ $ nano path/to/working/directory/samples.tsv
 $ snakemake --directory path/to/working/directory
 ```
 
+The default workflow profile is designed to run on a 12 core machine
+with 64 GB of memory.  You may add `--workflow-profile profiles/X` to
+use the `X` snakemake workflow profile instead of the default.
+
 ## `samples.tsv`
 
 ```
