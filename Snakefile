@@ -4,6 +4,7 @@ import pandas as pd
 
 
 localrules: all
+report: "report/workflow.rst"
 
 SAMPLES = pd.read_table(
   'samples.tsv',
