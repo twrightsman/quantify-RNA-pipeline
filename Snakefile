@@ -26,6 +26,8 @@ rule prefetch_SRA_accession:
     stderr = "data/sra/{accession}/{accession}.prefetch.err"
   conda:
     "envs/prefetch_SRA_accession.yml"
+  benchmark:
+    "benchmarks/prefetch_SRA_accession/{accession}.tsv"
   script:
     "scripts/prefetch_SRA_accession.sh"
 
@@ -40,6 +42,8 @@ rule dump_SRA_accession_FASTQ_single:
     stderr = "data/reads/{accession}/{accession}.fastq-dump.err"
   conda:
     "envs/dump_SRA_accession_FASTQ.yml"
+  benchmark:
+    "benchmarks/dump_SRA_accession_FASTQ_single/{accession}.tsv"
   script:
     "scripts/dump_SRA_accession_FASTQ.sh"
 
@@ -55,6 +59,8 @@ rule dump_SRA_accession_FASTQ_paired:
     stderr = "data/reads/{accession}/{accession}.fastq-dump.err"
   conda:
     "envs/dump_SRA_accession_FASTQ.yml"
+  benchmark:
+    "benchmarks/dump_SRA_accession_FASTQ_paired/{accession}.tsv"
   script:
     "scripts/dump_SRA_accession_FASTQ.sh"
 
@@ -85,6 +91,8 @@ rule trim_reads_single:
     stderr = "data/reads/{sample_id}/{sample_id}.fastp.err"
   conda:
     "envs/trim_reads.yml"
+  benchmark:
+    "benchmarks/trim_reads_single/{sample_id}.tsv"
   script:
     "scripts/trim_reads_single.sh"
 
@@ -118,6 +126,8 @@ rule trim_reads_paired:
     stderr = "data/reads/{sample_id}/{sample_id}.fastp.err"
   conda:
     "envs/trim_reads.yml"
+  benchmark:
+    "benchmarks/trim_reads_paired/{sample_id}.tsv"
   script:
     "scripts/trim_reads_paired.sh"
 
@@ -131,6 +141,8 @@ rule compress_trimmed_reads:
   priority: 5
   conda:
     "envs/compress_trimmed_reads.yml"
+  benchmark:
+    "benchmarks/compress_trimmed_reads/{sample_id}/{fastq_filename}.tsv"
   shell:
     "bgzip --threads {threads} --stdout {input.reads_trimmed} > {output.reads_trimmed_compressed}"
 
@@ -148,6 +160,8 @@ rule create_transcriptome:
     "envs/create_transcriptome.yml"
   params:
     verbosity = 0
+  benchmark:
+    "benchmarks/create_transcriptome/{species}/{genotype}.tsv"
   script:
     "scripts/create_transcriptome.py"
 
@@ -168,6 +182,8 @@ rule index_genome:
   log:
     stdout = "data/genomes/{species}/{genotype}/salmon_index.out",
     stderr = "data/genomes/{species}/{genotype}/salmon_index.err"
+  benchmark:
+    "benchmarks/index_genome/{species}/{genotype}.tsv"
   script:
     "scripts/index_genome.sh"
 
@@ -205,6 +221,8 @@ rule quantify_RNA:
   log:
     stdout = "quants/{sample_id}/salmon.out",
     stderr = "quants/{sample_id}/salmon.err"
+  benchmark:
+    "benchmarks/quantify_RNA/{sample_id}.tsv"
   script:
     "scripts/quantify_RNA.sh"
 
@@ -215,6 +233,8 @@ rule map_tx_to_gene:
   output:
     tx2gene = "data/genomes/{species}/{genotype}/tx2gene.tsv"
   priority: -5
+  benchmark:
+    "benchmarks/map_tx_to_gene/{species}/{genotype}.tsv"
   script:
     "scripts/map_tx_to_gene.py"
 
@@ -235,5 +255,7 @@ rule summarize_by_gene:
     quants_gene = "quants/{sample_id}/quant.gene.tsv"
   conda:
     "envs/summarize_by_gene.yml"
+  benchmark:
+    "benchmarks/summarize_by_gene/{sample_id}.tsv"
   script:
     "scripts/summarize_by_gene.R"
