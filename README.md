@@ -7,9 +7,9 @@ read needed input files (_e.g._ genomes) and write intermediate
 and output files.
 
 ```
-$ cp samples.example.tsv samples.tsv
-$ nano samples.tsv
-$ ./run.sh --cores 10 --directory path/to/working/directory
+$ cp samples.example.tsv path/to/working/directory/samples.tsv
+$ nano path/to/working/directory/samples.tsv
+$ snakemake --directory path/to/working/directory
 ```
 
 ## `samples.tsv`
