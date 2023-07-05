@@ -85,7 +85,7 @@ rule trim_reads_single:
     reads_trimmed = temp("data/reads/{sample_id}/{sample_id}.trimmed.fastq"),
     report_html = protected("data/reads/{sample_id}/{sample_id}.fastp.html"),
     report_json = protected("data/reads/{sample_id}/{sample_id}.fastp.json")
-  threads: 1
+  threads: 2
   priority: 5
   log:
     stdout = "data/reads/{sample_id}/{sample_id}.fastp.out",
@@ -120,7 +120,7 @@ rule trim_reads_paired:
     reads_mate2_trimmed = temp("data/reads/{sample_id}/{sample_id}_2.trimmed.fastq"),
     report_html = protected("data/reads/{sample_id}/{sample_id}.fastp.html"),
     report_json = protected("data/reads/{sample_id}/{sample_id}.fastp.json")
-  threads: 2
+  threads: 3
   priority: 5
   log:
     stdout = "data/reads/{sample_id}/{sample_id}.fastp.out",

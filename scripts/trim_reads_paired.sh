@@ -6,9 +6,11 @@ set \
   -o pipefail \
   -o xtrace
 
+# --thread doesn't seem to include main fastp thread
+# subtract one to avoid using more than requested threads
 fastp \
     --detect_adapter_for_pe \
-    --thread ${snakemake[threads]} \
+    --thread $(( snakemake[threads] - 1 )) \
     --in1 "${snakemake_input[reads_mate1]}" \
     --in2 "${snakemake_input[reads_mate2]}" \
     --out1 "${snakemake_output[reads_mate1_trimmed]}" \
