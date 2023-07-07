@@ -24,7 +24,7 @@ else
 fi
 
 salmon quant \
-       --threads ${snakemake[threads]} \
+       --threads $(( snakemake[threads] - 1 )) \
        --libType A \
        --index "${snakemake_input[index]}" \
        $SALMON_READ_INPUT_ARGS \
