@@ -1,5 +1,5 @@
 cores: 64
 use-conda: true
 set-threads:
-    index_genome: 16
+    index_genome: 8
     quantify_RNA: 16
