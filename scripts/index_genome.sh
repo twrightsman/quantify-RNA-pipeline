@@ -21,7 +21,7 @@ cat \
     > "${TMPDIR_LOCAL}/gentrome.fa"
 
 salmon index \
-       --threads ${snakemake[threads]} \
+       --threads $(( snakemake[threads] - 1 )) \
        --kmerLen ${snakemake_params[kmerLen]} \
        --tmpdir "${TMPDIR_LOCAL}/salmon_index_tmpdir" \
        --transcripts "${TMPDIR_LOCAL}/gentrome.fa" \
