@@ -46,3 +46,11 @@ indexed with `samtools faidx` (_e.g._
 must be replaced with underscores in the path names.
 
 An annotation should also exist at `data/genomes/species/genotype/annotation.gff.gz`.
+
+## Generate report
+
+```
+$ snakemake --directory path/to/working/directory --report report.html
+```
+
+This will generate a `report.html` file in your working directory.
