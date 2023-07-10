@@ -3,8 +3,7 @@
 set \
   -o errexit \
   -o nounset \
-  -o pipefail \
-  -o xtrace
+  -o pipefail
 
 ACCESSION_DIRECTORY="$(dirname "${snakemake_output[sra]}")"
 OUTPUT_DIRECTORY="$(dirname "$ACCESSION_DIRECTORY")"

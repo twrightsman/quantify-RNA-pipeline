@@ -3,8 +3,7 @@
 set \
   -o errexit \
   -o nounset \
-  -o pipefail \
-  -o xtrace
+  -o pipefail
 
 OUTPUT_DIRECTORY="$(dirname "${snakemake_output[quants]}")"
 
