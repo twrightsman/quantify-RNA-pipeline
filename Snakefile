@@ -86,6 +86,9 @@ rule trim_reads_single:
     report_html = protected("data/reads/{sample_id}/{sample_id}.fastp.html"),
     report_json = protected("data/reads/{sample_id}/{sample_id}.fastp.json")
   threads: 2
+  resources:
+    mem = "4GB",
+    runtime = "1h"
   priority: 5
   log:
     stdout = "data/reads/{sample_id}/{sample_id}.fastp.out",
@@ -121,6 +124,9 @@ rule trim_reads_paired:
     report_html = protected("data/reads/{sample_id}/{sample_id}.fastp.html"),
     report_json = protected("data/reads/{sample_id}/{sample_id}.fastp.json")
   threads: 3
+  resources:
+    mem = "4GB",
+    runtime = "1h"
   priority: 5
   log:
     stdout = "data/reads/{sample_id}/{sample_id}.fastp.out",
@@ -139,6 +145,10 @@ rule compress_trimmed_reads:
   output:
     reads_trimmed_compressed = protected("data/reads/{sample_id}/{fastq_filename}.trimmed.fq.gz")
   threads: 2
+  resources:
+    mem = "512MB",
+    runtime = lambda wildcards, attempt: f"{attempt}h"
+  retries: 1
   priority: 5
   conda:
     "envs/compress_trimmed_reads.yml"
@@ -156,6 +166,9 @@ rule create_transcriptome:
     annotation = "data/genomes/{species}/{genotype}/annotation.gff.gz"
   output:
     transcriptome = "data/genomes/{species}/{genotype}/transcriptome.fa"
+  resources:
+    mem = "4GB",
+    runtime = "1h"
   priority: -5
   conda:
     "envs/create_transcriptome.yml"
@@ -177,6 +190,10 @@ rule index_genome:
   params:
     kmerLen = 31
   threads: 4
+  resources:
+    mem = lambda wildcards, attempt: f"{(2 ** (attempt - 1)) * 32}GB",
+    runtime = lambda wildcards, attempt: f"{attempt}h"
+  retries: 2
   priority: -5
   conda:
     "envs/index_genome.yml"
@@ -216,6 +233,10 @@ rule quantify_RNA:
   params:
     library_selection = lambda wildcards: SAMPLES.loc[wildcards.sample_id, 'library_selection']
   threads: 4
+  resources:
+    mem = lambda wildcards, attempt: f"{attempt * 32}GB",
+    runtime = lambda wildcards, attempt: f"{attempt}h"
+  retries: 1
   priority: -5
   conda:
     "envs/quantify_RNA.yml"
@@ -233,6 +254,9 @@ rule map_tx_to_gene:
     annotation = "data/genomes/{species}/{genotype}/annotation.gff.gz"
   output:
     tx2gene = "data/genomes/{species}/{genotype}/tx2gene.tsv"
+  resources:
+    mem = "512MB",
+    runtime = "15m"
   priority: -5
   benchmark:
     "benchmarks/map_tx_to_gene/{species}/{genotype}.tsv"
@@ -254,6 +278,9 @@ rule summarize_by_gene:
     unpack(get_summarize_by_gene_input)
   output:
     quants_gene = "quants/{sample_id}/quant.gene.tsv"
+  resources:
+    mem = "1GB",
+    runtime = "15m"
   conda:
     "envs/summarize_by_gene.yml"
   benchmark:
