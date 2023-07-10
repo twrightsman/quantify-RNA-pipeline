@@ -19,7 +19,7 @@ use the `X` snakemake workflow profile instead of the default.
 ## `samples.tsv`
 
 ```
-sample_id       species genotype        library_layout  library_selection       location
+sample_id       species genotype        library_layout  library_selection       reads_location
 SRR8848655      Oryza sativa    Nipponbare      paired-end      random  sra
 SRR8848654      Oryza sativa    Nipponbare      paired-end      random  sra
 ```
