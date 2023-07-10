@@ -22,6 +22,8 @@ else
     SALMON_EXTRA_ARGS=""
 fi
 
+# --thread doesn't seem to include main salmon thread
+# subtract one to avoid using more than requested threads
 salmon quant \
        --threads $(( snakemake[threads] - 1 )) \
        --libType A \
