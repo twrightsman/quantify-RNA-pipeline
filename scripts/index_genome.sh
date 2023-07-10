@@ -3,8 +3,7 @@
 set \
   -o errexit \
   -o nounset \
-  -o pipefail \
-  -o xtrace
+  -o pipefail
 
 TMPDIR_LOCAL="$(mktemp --tmpdir --directory)"
 

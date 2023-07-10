@@ -3,8 +3,7 @@
 set \
   -o errexit \
   -o nounset \
-  -o pipefail \
-  -o xtrace
+  -o pipefail
 
 # --thread doesn't seem to include main fastp thread
 # subtract one to avoid using more than requested threads
