@@ -67,13 +67,13 @@ rule dump_SRA_accession_FASTQ_paired:
 
 
 def get_trim_reads_single_input(wildcards):
-    sample_location = SAMPLES.loc[wildcards.sample_id, 'location']
-    if sample_location == 'sra':
+    reads_location = SAMPLES.loc[wildcards.sample_id, 'reads_location']
+    if reads_location == 'sra':
       # if on SRA, sample_id is SRA accession
       return {
         'reads': f"data/reads/{wildcards.sample_id}/{wildcards.sample_id}.fastq"
       }
-    elif sample_location == 'local':
+    elif reads_location == 'local':
       return {
         'reads': f"data/reads/{wildcards.sample_id}/{wildcards.sample_id}.fq.gz"
       }
@@ -99,14 +99,14 @@ rule trim_reads_single:
 
 
 def get_trim_reads_paired_input(wildcards):
-    sample_location = SAMPLES.loc[wildcards.sample_id, 'location']
-    if sample_location == 'sra':
+    reads_location = SAMPLES.loc[wildcards.sample_id, 'reads_location']
+    if reads_location == 'sra':
       # if on SRA, sample_id is SRA accession
       return {
         'reads_mate1': f"data/reads/{wildcards.sample_id}/{wildcards.sample_id}_1.fastq",
         'reads_mate2': f"data/reads/{wildcards.sample_id}/{wildcards.sample_id}_2.fastq"
       }
-    elif sample_location == 'local':
+    elif reads_location == 'local':
       return {
         'reads_mate1': f"data/reads/{wildcards.sample_id}/{wildcards.sample_id}_1.fq.gz",
         'reads_mate2': f"data/reads/{wildcards.sample_id}/{wildcards.sample_id}_2.fq.gz"
