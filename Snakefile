@@ -20,6 +20,10 @@ rule all:
 rule prefetch_SRA_accession:
   output:
     sra = temp("data/sra/{accession}/{accession}.sra")
+  resources:
+    mem = "512MB",
+    runtime = lambda wildcards, attempt: f"{attempt * 15}m"
+  retries: 1
   params:
     max_size = "50G"
   log:
@@ -38,6 +42,10 @@ rule dump_SRA_accession_FASTQ_single:
     sra = rules.prefetch_SRA_accession.output.sra
   output:
     reads = temp("data/reads/{accession}/{accession}.fastq")
+  resources:
+    mem = "512MB",
+    runtime = lambda wildcards, attempt: f"{attempt * 15}m"
+  retries: 1
   log:
     stdout = "data/reads/{accession}/{accession}.fastq-dump.out",
     stderr = "data/reads/{accession}/{accession}.fastq-dump.err"
@@ -55,6 +63,10 @@ rule dump_SRA_accession_FASTQ_paired:
   output:
     reads_mate1 = temp("data/reads/{accession}/{accession}_1.fastq"),
     reads_mate2 = temp("data/reads/{accession}/{accession}_2.fastq")
+  resources:
+    mem = "512MB",
+    runtime = lambda wildcards, attempt: f"{attempt * 15}m"
+  retries: 1
   log:
     stdout = "data/reads/{accession}/{accession}.fastq-dump.out",
     stderr = "data/reads/{accession}/{accession}.fastq-dump.err"
