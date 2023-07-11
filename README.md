@@ -39,7 +39,7 @@ this folder.
 RNA-seq).
 
 The reference genome will be searched for in the working directory
-based to `run.sh`. It will be expecting a `bgzip`ed assembly at
+defined by `--directory`. It will be expecting a `bgzip`ed assembly at
 `data/genomes/species/genotype/assembly.fa.gz`, and it has to be
 indexed with `samtools faidx` (_e.g._
 `Oryza_sativa/Nipponbare/assembly.fa.gz`). Spaces in the species name
