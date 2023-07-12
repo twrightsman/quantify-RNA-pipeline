@@ -7,9 +7,12 @@ read needed input files (_e.g._ genomes) and write intermediate
 and output files.
 
 ```
+$ cd quantify-RNA-pipeline/
 $ cp samples.example.tsv path/to/working/directory/samples.tsv
 $ nano path/to/working/directory/samples.tsv
-$ snakemake --directory path/to/working/directory
+$ conda env create -f environment.yml
+$ conda activate quantify-RNA-pipeline
+(quantify-RNA-pipeline) $ snakemake --directory path/to/working/directory
 ```
 
 The default workflow profile is designed to run on a 12 core machine
