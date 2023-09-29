@@ -4,6 +4,6 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
-  - snakemake >=7.19  # native SLURM support
+  - snakemake >=7.29  # native SLURM support, workflow-profile support
   - pandas =2  # tabular metadata parsing
   - bash >=4  # for associative arrays
