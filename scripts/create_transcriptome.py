@@ -17,8 +17,13 @@ def create_unique_feature_id(feature: gffutils.Feature) -> str:
         # don't mess up names of potential parents
         return feature.attributes['ID'][0]
     else:
+        identifier = feature.featuretype
+        if 'ID' in feature.attributes:
+            identifier = feature.attributes['ID'][0]
+        elif 'Name' in feature.attributes:
+            identifier = feature.attributes['Name'][0]
         # features without children can have autoincremented IDs
-        return f"autoincrement:{feature.attributes['ID'][0]}"
+        return f"autoincrement:{identifier}"
 
 
 def main(reference_path: Path, annotation_path: Path, output_path: Path, gffutils_cache_path: Optional[Path]):
