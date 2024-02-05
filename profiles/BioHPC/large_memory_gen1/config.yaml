@@ -1,5 +1,6 @@
 cores: 64
-use-conda: true
+software-deployment-method: conda
+conda-frontend: conda
 set-threads:
     index_genome: 8
     quantify_RNA: 16
