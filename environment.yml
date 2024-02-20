@@ -4,6 +4,6 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
-  - snakemake =8
+  - snakemake >=8.4.9,<9  # for dry run fix
   - pandas =2
   - bash >=4  # for associative arrays
